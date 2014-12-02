@@ -1,4 +1,7 @@
-// TODO
+/*-----------------------------------------------------------------------------
+ * Code for the Player Character
+ * ----------------------------------------------------------------------------
+ */
 game.PlayerEntity = me.Entity.extend({
     init: function(x, y, settings){
         this._super(me.Entity, 'init', [x, y, {
@@ -71,13 +74,26 @@ game.PlayerEntity = me.Entity.extend({
         return true;
     },
     
-        collideHandler: function(response){
-            
+        collideHandler: function (response) {
+            var ydif = this.pos.y - response.b.pos.y;
+            console.log(ydif);
+            if (response.b.type === 'badguy') {
+                if (ydif <= -115) {
+                   response.b.alive = false;
+                } 
+                else {
+                   me.state.change(me.state.MENU);
+                }
+            }
         }
         
     
 });
 
+/*-----------------------------------------------------------------------------
+ * Code for the Level Doors
+ * ----------------------------------------------------------------------------
+ */
 game.LevelTrigger = me.Entity.extend({
     init: function(x, y, settings){
         this._super(me.Entity, 'init', [x, y, settings]);
@@ -94,6 +110,10 @@ game.LevelTrigger = me.Entity.extend({
     }
 });
 
+/*-----------------------------------------------------------------------------
+ * Code for the Enemies
+ * ----------------------------------------------------------------------------
+ */
 game.BadGuy = me.Entity.extend({
     init: function(x, y, settings){
         this._super(me.Entity, 'init', [x, y, {
@@ -143,9 +163,33 @@ game.BadGuy = me.Entity.extend({
         
         
        this._super(me.Entity, "update", [delta]);
-       return true;
+        return true;
     },
-     collideHandler: function(){
-            
+    collideHandler: function () {
+
     }
+});
+
+/*-----------------------------------------------------------------------------
+ * Code for the Mushroom Powerup
+ * ----------------------------------------------------------------------------
+ */
+game.Mushroom = me.Entity.extend({
+    init: function (x, y, settings) {
+        this._super(me.Entity, 'init', [x, y, {
+                image: "slime",
+                spritewidth: "64",
+                spriteheight: "64",
+                width: 64,
+                height: 64,
+                getShape: function () {
+                    return (new me.Rect(0, 0, 64, 64)).toPolygon();
+                }
+            }]);
+        
+        me.collision.check(this);
+        this.type = "mushroom";
+    }
+
+
 });
