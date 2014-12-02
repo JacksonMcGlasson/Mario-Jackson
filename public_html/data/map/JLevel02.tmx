@@ -46,8 +46,8 @@
   </object>
  </objectgroup>
  <objectgroup name="EnemyEntities">
-  <object name="BadGuy" x="631" y="420" width="210" height="70"/>
-  <object name="BadGuy" x="1123" y="141" width="135" height="67"/>
+  <object name="BadGuy" x="638" y="422" width="194" height="65"/>
+  <object name="BadGuy" x="1128" y="146" width="129" height="62"/>
   <object x="1258" y="208" height="424"/>
  </objectgroup>
 </map>
