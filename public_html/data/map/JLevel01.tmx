@@ -47,5 +47,6 @@
  </layer>
  <objectgroup name="EnemyEntities">
   <object name="BadGuy" x="774" y="422" width="276" height="62"/>
+  <object name="BadGuy" x="1262" y="418" width="276" height="68"/>
  </objectgroup>
 </map>
