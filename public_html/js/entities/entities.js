@@ -124,9 +124,13 @@ game.PlayerEntity = me.Entity.extend({
             this.renderable.setCurrentAnimation("grow", "bigIdle");
             me.game.world.removeChild(response.b);
         }
+        else if(response.b.type === 'fall'){
+            if(y <= 590);
+            response.b.alive = false;
+        }
     }
-        
-    
+
+
 });
 
 /*-----------------------------------------------------------------------------
@@ -134,15 +138,14 @@ game.PlayerEntity = me.Entity.extend({
  * ----------------------------------------------------------------------------
  */
 game.LevelTrigger = me.Entity.extend({
-    init: function(x, y, settings){
+    init: function (x, y, settings) {
         this._super(me.Entity, 'init', [x, y, settings]);
         this.body.onCollision = this.onCollision.bind(this);
         this.level = settings.level;
         this.xSpawn = settings.xSpawn;
         this.ySpawn = settings.ySpawn;
     },
-    
-    onCollision: function(){
+    onCollision: function () {
         this.body.setCollisionMask(me.collision.types.NO_OBJECT);
         me.levelDirector.loadLevel(this.level);
         me.state.current().resetPlayer(this.xSpawn, this.ySpawn);
@@ -154,18 +157,18 @@ game.LevelTrigger = me.Entity.extend({
  * ----------------------------------------------------------------------------
  */
 game.BadGuy = me.Entity.extend({
-    init: function(x, y, settings){
+    init: function (x, y, settings) {
         this._super(me.Entity, 'init', [x, y, {
                 image: "slime",
                 spritewidth: "60",
                 spriteheight: "28",
                 width: 60,
                 height: 28,
-                getShape: function(){
+                getShape: function () {
                     return (new me.Rect(0, 0, 60, 28)).toPolygon();
                 }
-        }]); 
-    
+            }]);
+
         this.spritewidth = 60;
         var width = settings.width;
         x = this.pos.x;
@@ -173,15 +176,15 @@ game.BadGuy = me.Entity.extend({
         this.endX = x + width - this.spritewidth;
         this.pos.x = x + width - this.spritewidth;
         this.updateBounds();
-        
+
         this.alwaysUpdate = true;
-        
+
         this.walkLeft = false;
         this.alive = true;
         this.type = "badguy";
-        
+
         this.body.setVelocity(4, 6);
-        
+
     },
     update: function (delta) {
         this.body.update(delta);
@@ -228,6 +231,25 @@ game.Mushroom = me.Entity.extend({
 
         me.collision.check(this);
         this.type = "mushroom";
+    }
+
+
+});
+game.Star = me.Entity.extend({
+    init: function (x, y, settings) {
+        this._super(me.Entity, 'init', [x, y, {
+                image: "mushroom",
+                spritewidth: "64",
+                spriteheight: "64",
+                width: 64,
+                height: 64,
+                getShape: function () {
+                    return (new me.Rect(0, 0, 64, 64)).toPolygon();
+                }
+            }]);
+
+        me.collision.check(this);
+        this.type = "star";
     }
 
 
