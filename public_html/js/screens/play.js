@@ -17,6 +17,7 @@ game.PlayScreen = me.ScreenObject.extend({
                 me.input.bindKey(me.input.KEY.RIGHT, "right");
                 me.input.bindKey(me.input.KEY.LEFT, "left");
                 me.input.bindKey(me.input.KEY.UP, "jump");
+                me.input.bindKey(me.input.KEY.R, "restart");
 	},
 
 

@@ -16,7 +16,7 @@ game.PlayerEntity = me.Entity.extend({
         }]);  
         
         this.renderable.addAnimation("idle", [3]);
-        this.renderable.addAnimation("bigIdle", [19]);
+        this.renderable.addAnimation("bigIdle", [7]);
         this.renderable.addAnimation("smallWalk", [8, 9, 10, 11, 12, 13], 80);
         this.renderable.addAnimation("bigWalk", [14, 15, 16, 17, 18, 19], 80);
         this.renderable.addAnimation("jump", [8]);
@@ -55,6 +55,9 @@ game.PlayerEntity = me.Entity.extend({
                 this.body.jumping = true;
             }
 
+        }
+        if (me.input.isKeyPressed('restart')){
+            resetPlayer();
         }
         this.body.update(delta);
         me.collision.check(this, true, this.collideHandler.bind(this), true);
