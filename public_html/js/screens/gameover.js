@@ -13,7 +13,8 @@ game.GameOverScreen = me.ScreenObject.extend({
             },
             draw: function(renderer){
                 this.font.draw(renderer.getContext(), "Game Over!", 450, 130);
-                this.font.draw(renderer.getContext(), "Press Enter To Go To Main Menu", 250, 530);
+                this.font.draw(renderer.getContext(), "Press Enter To Go To Main Menu", 200, 400);
+                this.font.draw(renderer.getContext(), "Press R To Restart", 200, 300);
             }
             
         })));
@@ -23,7 +24,11 @@ game.GameOverScreen = me.ScreenObject.extend({
                 me.state.change(me.state.MENU);
             }
         });
-            
+             this.handler = me.event.subscribe(me.event.KEYDOWN, function(action, keyCode, edge){
+            if(action === "restart"){
+                me.state.change(me.state.PLAY);
+            }
+        });
         
     },
 	

@@ -1,7 +1,7 @@
 /*-----------------------------------------------------------------------------
  * Code for the Player Character
  * ----------------------------------------------------------------------------
- */
+ */ 
 game.PlayerEntity = me.Entity.extend({
     init: function(x, y, settings){
         this._super(me.Entity, 'init', [x, y, {
@@ -15,6 +15,7 @@ game.PlayerEntity = me.Entity.extend({
                 }
         }]);  
         
+        //sets animations for name, frames and speed
         this.renderable.addAnimation("idle", [3]);
         this.renderable.addAnimation("bigIdle", [7]);
         this.renderable.addAnimation("smallWalk", [8, 9, 10, 11, 12, 13], 80);
@@ -28,6 +29,7 @@ game.PlayerEntity = me.Entity.extend({
         
         this.big = false;
         this.body.setVelocity(5, 20);
+        //makes screen follow mario
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
     },
     
@@ -47,6 +49,7 @@ game.PlayerEntity = me.Entity.extend({
         else {
             this.body.vel.x = 0;
         }
+        //control for jumping
         if (me.input.isKeyPressed('jump')) {
             // make sure we are not already jumping or falling
             if (!this.body.jumping && !this.body.falling) {
@@ -56,12 +59,10 @@ game.PlayerEntity = me.Entity.extend({
             }
 
         }
-        if (me.input.isKeyPressed('restart')){
-            resetPlayer();
-        }
         this.body.update(delta);
         me.collision.check(this, true, this.collideHandler.bind(this), true);
         
+        //sets conditions for when mario is not big
         if (!this.big) {
             if (this.body.vel.x !== 0) {
                 if (!this.renderable.isCurrentAnimation("smallWalk")) {
@@ -72,6 +73,7 @@ game.PlayerEntity = me.Entity.extend({
             else {
                 this.renderable.setCurrentAnimation("idle");
             }
+            //sets conditions for when mario is big
         }else{
             if (this.body.vel.x !== 0) {
                 if (!this.renderable.isCurrentAnimation("bigWalk") || this.renderable.isCurrentAnimation("grow") || this.renderable.isCurrentAnimation("shrinl")) {
@@ -102,10 +104,11 @@ game.PlayerEntity = me.Entity.extend({
         this._super(me.Entity, "update", [delta]);
         return true;
     },
-    
+    //how mario reacts to colliding with things
     collideHandler: function (response) {
         var ydif = this.pos.y - response.b.pos.y;
         console.log(ydif);
+        //when mario touches enemy
         if (response.b.type === 'badguy') {
             if (ydif <= -115) {
                 response.b.alive = false;
@@ -118,15 +121,17 @@ game.PlayerEntity = me.Entity.extend({
                     this.renderable.setCurrentAnimation("shrink", "idle");
                     this.renderable.setAnimationFrame();
                 } else {
-                    me.state.change(me.state.MENU);
+                    me.state.change(me.state.GAMEOVER);
                 }
             }
         }
+        //when mario gets a mushroom
         else if (response.b.type === 'mushroom') {
             this.big = true;
             this.renderable.setCurrentAnimation("grow", "bigIdle");
             me.game.world.removeChild(response.b);
         }
+        //when mario falls
         else if(response.b.type === 'fall'){
             if(y <= 590);
             response.b.alive = false;
@@ -238,10 +243,14 @@ game.Mushroom = me.Entity.extend({
 
 
 });
+/*-----------------------------------------------------------------------------
+ * Code For The Star
+ * ----------------------------------------------------------------------------
+ */
 game.Star = me.Entity.extend({
     init: function (x, y, settings) {
         this._super(me.Entity, 'init', [x, y, {
-                image: "mushroom",
+                image: "star",
                 spritewidth: "64",
                 spriteheight: "64",
                 width: 64,
